@@ -1,0 +1,272 @@
+📝 BLOG: Explicación completa del CRUD de Estudiantes en Python (JSON + CSV)
+Guía detallada para aprender, estudiar y entender cómo funciona cada parte
+⭐ Introducción
+
+En este proyecto estamos trabajando un CRUD (Crear, Leer, Actualizar y Eliminar) de estudiantes utilizando Python.
+Los datos se guardan en un archivo JSON, y además se pueden exportar a un archivo CSV.
+
+Este CRUD es sencillo, pero incluye funciones muy importantes para manejar archivos como:
+
+json.load()
+
+json.dump()
+
+csv.writer()
+
+os.path.exists()
+
+Rutas o paths de archivos
+
+Diferencias entre JSON, CSV y PTH
+
+📂 ¿Qué archivos manipula este programa?
+JSON (estudiantes.json)
+
+Guarda los estudiantes en formato estructurado.
+
+Es fácil de leer tanto por humanos como por programas.
+
+Se usa para persistencia de datos (guardar para la próxima vez que se ejecute el programa).
+
+CSV (estudiantes.csv)
+
+Guarda los estudiantes separados por comas.
+
+Ideal para abrir en Excel, Google Sheets, LibreOffice, etc.
+
+📌 Importaciones del código
+import json
+import csv
+import os
+
+¿Qué hace cada una?
+✔ json
+
+Sirve para guardar y leer archivos .json usando funciones como:
+
+json.load()
+
+json.dump()
+
+✔ csv
+
+Permite escribir archivos CSV (tablas separadas por comas).
+
+✔ os
+
+Nos deja interactuar con el sistema operativo (revisar archivos, carpetas, etc.).
+Usamos:
+
+os.path.exists() → permite saber si un archivo existe.
+
+📁 ¿Qué es un PATH? (Explicación completa)
+
+Un path es la “dirección” donde se encuentra un archivo dentro del sistema operativo.
+Ejemplos:
+
+"estudiantes.json" → path relativo (misma carpeta del proyecto)
+
+"/home/tomas/Documentos/estudiantes.json" → path absoluto en Linux
+
+"C:\\Usuarios\\Tomas\\estudiantes.json" → path absoluto en Windows
+
+Python necesita esta ruta para abrir, leer o guardar un archivo.
+
+📘 ¿Qué es un archivo .pth?
+
+Los archivos .pth NO se usan en este CRUD, pero te explico porque tuviste curiosidad.
+
+Los .pth se usan en Python para:
+
+Agregar rutas (paths) extra donde Python buscará módulos.
+
+Se usan al instalar librerías o paquetes.
+
+Sirven para extender el sys.path (la lista de carpetas donde Python busca scripts).
+
+Ejemplo de contenido de un .pth:
+
+/home/tomas/mis_modulos/
+
+
+Esto le dice a Python que también debe buscar módulos en esa carpeta.
+
+🔵 1. Función leer_datos()
+def leer_datos():
+    if not os.path.exists(ARCHIVO_JSON):
+        return []
+
+    with open(ARCHIVO_JSON, "r", encoding="utf-8") as file:
+        return json.load(file)
+
+¿Qué hace?
+✔ os.path.exists()
+
+Comprueba si el archivo existe.
+
+Si no existe:
+
+El programa devuelve [] (lista vacía)
+
+Si existe:
+
+Se abre con open()
+
+Se usa:
+
+✔ json.load(file)
+
+Convierte el contenido del archivo JSON → una lista o diccionario de Python.
+
+Ejemplo de JSON:
+
+[
+  {"id": "1", "nombre": "Ana", "edad": "20"}
+]
+
+
+Cuando hacemos json.load() se transforma en:
+
+[
+  {"id": "1", "nombre": "Ana", "edad": "20"}
+]
+
+🔵 2. Función guardar_datos()
+def guardar_datos(estudiantes):
+    with open(ARCHIVO_JSON, "w", encoding="utf-8") as file:
+        json.dump(estudiantes, file, indent=4, ensure_ascii=False)
+
+✔ ¿Qué es json.dump()?
+
+dump significa “volcar/escribir”.
+
+Sirve para convertir una estructura de Python → archivo JSON.
+
+Opciones usadas:
+
+indent=4 → se ve ordenado con sangrías.
+
+ensure_ascii=False → permite ñ, tildes, emojis.
+
+Ejemplo JSON generado:
+
+[
+    {
+        "id": "1",
+        "nombre": "Ana",
+        "edad": "20"
+    }
+]
+
+🔵 3. Crear estudiante
+
+Guarda un nuevo estudiante en el archivo.
+
+Funcionamiento:
+
+Carga la lista existente.
+
+Pide los datos.
+
+Crea un diccionario.
+
+Lo agrega a la lista.
+
+Guarda la lista con json.dump().
+
+🔵 4. Actualizar estudiante
+
+Busca por ID y reemplaza nombre y edad:
+
+for est in estudiantes:
+    if est["id"] == id_buscar:
+        est["nombre"] = input("Nuevo nombre: ")
+        est["edad"] = input("Nueva edad: ")
+        guardar_datos(estudiantes)
+
+🔵 5. Eliminar estudiante
+estudiantes_nuevos = [e for e in estudiantes if e["id"] != id_buscar]
+
+
+Es una lista filtrada sin el ID buscado.
+
+Luego se vuelve a guardar.
+
+🔵 6. Exportar a CSV
+with open("estudiantes.csv", "w", newline="", encoding="utf-8") as file:
+    writer = csv.writer(file)
+
+✔ ¿Qué es csv.writer()?
+
+Sirve para escribir filas en un archivo CSV.
+
+writer.writerow(["ID", "Nombre", "Edad"])
+
+
+→ Crea el encabezado.
+
+writer.writerow([e["id"], e["nombre"], e["edad"]])
+
+
+→ Escribe cada estudiante como fila.
+
+Ejemplo de CSV:
+
+ID,Nombre,Edad
+1,Ana,20
+2,Carlos,21
+
+🔵 7. Menú principal
+
+Usa un while True para mostrar opciones y ejecutar las funciones CRUD.
+
+🟢 Resumen Final (ideal para copiar en cuaderno)
+JSON
+
+json.load() → lee JSON → Python
+
+json.dump() → Python → JSON
+
+CSV
+
+csv.writer() → permite escribir filas de texto.
+
+OS
+
+os.path.exists() → verifica si un archivo existe.
+
+Un PATH es la dirección donde está un archivo.
+
+PTH
+
+Extiende el PATH de Python para buscar módulos adicionales.
+
+No se usa en el CRUD, pero es útil para entender rutas.
+
+MAPA MENTAL
+
+CRUD Estudiantes (Python)
+│
+├── Archivos
+│   ├── JSON
+│   │   ├── json.load()
+│   │   └── json.dump()
+│   └── CSV
+│       └── csv.writer()
+│
+├── Sistema Operativo
+│   ├── os.path.exists()
+│   └── PATH (rutas de archivos)
+│
+├── Funciones CRUD
+│   ├── leer_datos()
+│   ├── guardar_datos()
+│   ├── crear_estudiante()
+│   ├── actualizar_estudiante()
+│   ├── eliminar_estudiante()
+│   └── exportar_csv()
+│
+└── Conceptos extra
+    ├── .pth (extiende rutas de Python)
+    └── open() para leer/escribir archivos
+
